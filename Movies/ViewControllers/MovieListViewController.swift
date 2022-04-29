@@ -9,9 +9,6 @@ import UIKit
 import Combine
 import CloudKit
 
-
-
-
 class HomeViewController: UIViewController , MovieViewControllerProtocol {
     
     var viewModel: MovieViewModelType?
@@ -27,11 +24,11 @@ class HomeViewController: UIViewController , MovieViewControllerProtocol {
         return segmentedControl
     }()
     
-    @objc func handleSegmentChange(_ sender: Any){
+    @objc private func handleSegmentChange(_ sender: Any){
         showSegments()
-        
     }
-    func showSegments(){
+    
+    private func showSegments(){
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             viewModel?.showAllMovies()
@@ -52,7 +49,6 @@ class HomeViewController: UIViewController , MovieViewControllerProtocol {
     private lazy var searchBar : UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.delegate = self
-        
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         return searchBar
     }()
@@ -75,11 +71,9 @@ class HomeViewController: UIViewController , MovieViewControllerProtocol {
         viewModel?.getMovies()
     }
     
-    
-    
     // ---------------- UI Elements --------------------
     
-    lazy var usernameView : UILabel = {
+    private lazy var usernameView : UILabel = {
         let usernameView = UILabel()
         usernameView.text = "Hello \((UserDefaults.standard.string(forKey: Constants.username)!))"
         usernameView.translatesAutoresizingMaskIntoConstraints = false
@@ -106,24 +100,16 @@ class HomeViewController: UIViewController , MovieViewControllerProtocol {
         setupContollers()
     }
     
-    
-    
-
-    
     override func viewWillAppear(_ animated: Bool) {
-        self.usernameView.text = "Hello \((UserDefaults.standard.string(forKey: Constants.username)!))"
-        
-//        showSegments()
+        self.usernameView.text = "Welcome \((UserDefaults.standard.string(forKey: Constants.username)!))"
     }
     
-    
-    
-    
-    
-    func setupUI() {
+    private func setupUI() {
         navigationController?.navigationBar.topItem?.titleView = usernameView
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "edit", style: .plain, target: self, action: #selector(addTapped))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editUsername))
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Forget", style: .plain, target: self, action: #selector(forgetUsername))
         
         view.addSubview(segmentedControl)
         view.addSubview(searchBar)
@@ -138,10 +124,8 @@ class HomeViewController: UIViewController , MovieViewControllerProtocol {
         segmentedControl.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 10.0).isActive = true
         segmentedControl.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10.0).isActive = true
         
-        
         searchBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 10.0).isActive = true
         searchBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10.0).isActive = true
-        
         
         movieListView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 10.0).isActive = true
         movieListView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10.0).isActive = true
@@ -149,7 +133,7 @@ class HomeViewController: UIViewController , MovieViewControllerProtocol {
         movieListView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor).isActive = true
     }
     
-    @objc func addTapped(){
+    @objc private func editUsername(){
         let editViewController = EditUsernameViewController()
         
         
@@ -157,14 +141,18 @@ class HomeViewController: UIViewController , MovieViewControllerProtocol {
         self.present(editViewController, animated: true, completion:  nil)
     }
     
-    func setupViewModel(){
-        
+    @objc private func forgetUsername(){
+        UserDefaults.standard.set(nil, forKey: Constants.username)
+        viewModel?.clearFavourites()
+        dismiss(animated: true)
+    }
+    
+    private func setupViewModel(){
         let networkManager = MainNetworkManager()
         self.viewModel = MovieViewModel(networkManager: networkManager)
     }
     
-    
-    func setupContollers() {
+    private func setupContollers() {
         viewModel?
             .publisherMovies
             .dropFirst()
@@ -190,18 +178,13 @@ class HomeViewController: UIViewController , MovieViewControllerProtocol {
         // get Movies from API
         viewModel?.getMovies()
     }
-    
-    
-    
 }
 
 extension HomeViewController : UISearchBarDelegate {
-    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel!.search(by: searchText, onlyFavourites: segmentedControl.selectedSegmentIndex == 1)
         movieListView.reloadData()
     }
-    
 }
 
 extension HomeViewController : UITableViewDataSource, UITableViewDelegate {
@@ -234,19 +217,17 @@ extension HomeViewController : UITableViewDataSource, UITableViewDelegate {
         }
         
         return UITableViewCell()
-        
-        
     }
     
-    func showMovieDetails(by row: Int){
+    private func showMovieDetails(by row: Int){
         let details = MovieDetailsViewController()
         details.configure(row: row)
         details.setupViewModel(viewModel: viewModel!)
-//        details.modalPresentationStyle = .fullScreen
-       
-    
-        self.present(details, animated: true)
-//        navigationController?.pushViewController(details, animated: true)
+        // details.modalPresentationStyle = .fullScreen
+        self.present(details, animated: true, completion: {
+            self.movieListView.reloadData()
+        })
+        // navigationController?.pushViewController(details, animated: true)
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {

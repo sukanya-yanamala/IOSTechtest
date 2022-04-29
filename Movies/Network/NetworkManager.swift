@@ -8,8 +8,6 @@
 import Foundation
 import Combine
 
-
-
 protocol NetworkManager {
     func getModel<Model: Decodable>(_ model: Model.Type, from url: String) -> AnyPublisher<Model, NetworkError>
     func getData(from url: String, completionHandler: @escaping (Data?) -> Void)
@@ -47,7 +45,7 @@ class MainNetworkManager: NetworkManager {
         }
         .resume()
     }
-        
+    
 }
 
 

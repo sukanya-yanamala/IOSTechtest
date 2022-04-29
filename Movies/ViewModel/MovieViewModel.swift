@@ -13,34 +13,23 @@ protocol MovieViewModelType : AnyObject {
     var publisherImages: Published<[Int: Data]>.Publisher { get }
     var publisherFavourites: Published<[Int]>.Publisher { get }
     
-    
-    
     func getMovies()
     func totalMovies() -> Int
-    
     func getMovie(by row: Int) -> Movie?
     func getImageData(by id: Int) -> Data?
-    
     func search(by searchText: String, onlyFavourites: Bool) -> Void
-    
     func makeFavourite(by id: Int) -> Void
     func removeFavourite(by id: Int) -> Void
-
     func isFavourite(by id: Int) -> Bool
-    
     func showAllMovies() -> Void
     func showFavouriteMovies() -> Void
-    
+    func clearFavourites() -> Void
 }
 
 
 class MovieViewModel : MovieViewModelType {
-    
-    
-     var networkManager : NetworkManager
+    var networkManager : NetworkManager
     private var subscribers = Set<AnyCancellable>()
-    
-    
     
     var publisherMovies: Published<[Movie]>.Publisher { $movies }
     var publisherImages: Published<[Int: Data]>.Publisher { $images }
@@ -48,18 +37,14 @@ class MovieViewModel : MovieViewModelType {
     
     
     @Published private(set) var movies  = [Movie]()
-    
     @Published private(set) var filteredMovies  = [Movie]()
-    
     @Published private(set) var images  = [Int: Data]()
-    
     @Published private(set) var favourites  = [Int]()
     
     
     init(networkManager: NetworkManager) {
         self.networkManager = networkManager
     }
-    
     
     func getMovies() {
         movies = []
@@ -75,7 +60,6 @@ class MovieViewModel : MovieViewModelType {
             })
         } else {
             filteredMovies = movies.filter({ (movie: Movie) -> Bool in
-              
                 // Return the tuple if the range contains a match.
                 return !onlyFavourites || favourites.contains(movie.id!)
             })
@@ -98,7 +82,6 @@ class MovieViewModel : MovieViewModelType {
             }
             .store(in: &subscribers)
     }
-    
     
     private func downloadImage(of path:String, at: Int) {
         let group = DispatchGroup()
@@ -134,16 +117,20 @@ class MovieViewModel : MovieViewModelType {
     func removeFavourite(by id: Int) -> Void {
         favourites = favourites.filter { $0 != id }
     }
-
+    
     func isFavourite(by id: Int) -> Bool {
         return favourites.contains(id)
     }
     
-    
     func showAllMovies() -> Void {
         filteredMovies = movies
     }
+    
     func showFavouriteMovies() -> Void {
         filteredMovies = movies.filter { favourites.contains($0.id!) }
+    }
+    
+    func clearFavourites() {
+        favourites = []
     }
 }

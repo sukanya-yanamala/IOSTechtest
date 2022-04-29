@@ -8,11 +8,9 @@
 import Foundation
 import UIKit
 
-
 class EditUsernameViewController : UIViewController{
     
-    
-    lazy var usernameField: UITextField = {
+    private lazy var usernameField: UITextField = {
         let usernameField = UITextField()
         usernameField.translatesAutoresizingMaskIntoConstraints = false
         usernameField.borderStyle = .roundedRect
@@ -21,16 +19,14 @@ class EditUsernameViewController : UIViewController{
         return usernameField
     }()
     
-    
-    lazy var updateButton : UIButton = {
-        let loginButton : UIButton = UIButton(type: .system)
-        
-        loginButton.setTitle("Update", for: .normal)
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.addTarget(self, action: #selector(update), for: .touchUpInside)
-        
-        return loginButton
+    private lazy var updateButton : UIButton = {
+        let updateButton : UIButton = UIButton(type: .system)
+        updateButton.setTitle("Update", for: .normal)
+        updateButton.translatesAutoresizingMaskIntoConstraints = false
+        updateButton.addTarget(self, action: #selector(update), for: .touchUpInside)
+        return updateButton
     }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -39,12 +35,12 @@ class EditUsernameViewController : UIViewController{
         
         let safeArea = view.safeAreaLayoutGuide
         
-//        align username field
+        // align username field
         usernameField.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 20.0).isActive = true
         usernameField.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 10.0).isActive = true
         usernameField.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10.0).isActive = true
         
-//        align login button
+        // align login button
         
         updateButton.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 30.0).isActive = true
         updateButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 10.0).isActive = true
@@ -52,7 +48,7 @@ class EditUsernameViewController : UIViewController{
         
     }
     
-    @objc func update(sender:UIButton) {
+    @objc private  func update(sender:UIButton) {
         if let username = usernameField.text{
             if username .isEmpty{
                 showAlert(for: self, message:  "Enter username")
@@ -63,7 +59,7 @@ class EditUsernameViewController : UIViewController{
         }
     }
     
-    func showAlert(for controller: UIViewController, message: String) {
+    private func showAlert(for controller: UIViewController, message: String) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         controller.present(alert, animated: true, completion: nil)

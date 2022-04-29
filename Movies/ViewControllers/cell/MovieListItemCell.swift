@@ -10,15 +10,13 @@ import UIKit
 class MovieListItemCell : UITableViewCell {
     static let identifier = "movieListItem"
     
-    
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
     }
     
     
-    lazy var movieImage: UIImageView = {
+    private lazy var movieImage: UIImageView = {
         let movieImage = UIImageView()
         movieImage.translatesAutoresizingMaskIntoConstraints = false
         //        movieImage.heightAnchor.constraint(equalToConstant: 30).isActive = true
@@ -29,7 +27,7 @@ class MovieListItemCell : UITableViewCell {
     }()
     
     
-    private let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -38,7 +36,7 @@ class MovieListItemCell : UITableViewCell {
         return label
     }()
     
-    private let overviewLabel: UILabel = {
+    private lazy var overviewLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -47,7 +45,7 @@ class MovieListItemCell : UITableViewCell {
         return label
     }()
     
-    private let favouriteLabel: UIImageView = {
+    private lazy var favouriteLabel: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -57,7 +55,7 @@ class MovieListItemCell : UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupUI(){
+    private func setupUI(){
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
         let vView   = UIStackView()
@@ -90,9 +88,6 @@ class MovieListItemCell : UITableViewCell {
         hView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: 5).isActive = true
         hView.heightAnchor.constraint(equalToConstant: 100 ).isActive = true
         hView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width - 30 ).isActive = true
-        
-        
-        
     }
     
     func configure(by movieItem: MovieItem){
@@ -102,12 +97,12 @@ class MovieListItemCell : UITableViewCell {
         titleLabel.text = movieItem.title
         overviewLabel.text = movieItem.overview
         
-        if(movieItem.isFavourite ?? false){
+        if(movieItem.isFavourite ?? false) {
             favouriteLabel.image =  UIImage(systemName: "star.fill")
-        }else {
+        } else {
             favouriteLabel.image =  UIImage(systemName: "star")
         }
-
+        
     }
 }
 
