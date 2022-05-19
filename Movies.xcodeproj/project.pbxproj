@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29B656632836F16700B3C4DD /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B656622836F16700B3C4DD /* Dummy.swift */; };
 		29F35406281AF31D0046CA95 /* MoviesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F35405281AF31D0046CA95 /* MoviesTests.swift */; };
 		29F3540D281AF39F0046CA95 /* NetworkURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F3540C281AF39F0046CA95 /* NetworkURL.swift */; };
 		29F3540F281AF3F20046CA95 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F3540E281AF3F20046CA95 /* NetworkError.swift */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		29B656622836F16700B3C4DD /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		29F35403281AF31D0046CA95 /* MoviesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoviesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		29F35405281AF31D0046CA95 /* MoviesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesTests.swift; sourceTree = "<group>"; };
 		29F3540C281AF39F0046CA95 /* NetworkURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkURL.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				29FCF1222809CC2B00E0D57A /* MovieListViewController.swift */,
 				29FB2EAF280DA67A00B8C9BE /* MovieDetailsViewController.swift */,
 				29FB2ED82810158800B8C9BE /* Global */,
+				29B656622836F16700B3C4DD /* Dummy.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				29FCF10C2809CB2500E0D57A /* MainViewController.swift in Sources */,
+				29B656632836F16700B3C4DD /* Dummy.swift in Sources */,
 				29F3540F281AF3F20046CA95 /* NetworkError.swift in Sources */,
 				29FCF1082809CB2500E0D57A /* AppDelegate.swift in Sources */,
 				29FB2EB5280DAFEC00B8C9BE /* NetworkManager.swift in Sources */,
