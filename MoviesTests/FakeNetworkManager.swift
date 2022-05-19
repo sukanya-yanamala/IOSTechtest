@@ -12,7 +12,7 @@ import Combine
 
 
 class FakeNetworkManager: NetworkManager {
-    
+     
     var data: Data?
     var error: NetworkError?
     
