@@ -7,7 +7,5 @@
 
 import Foundation
 class Test {
-    func Hello() {
-        
-    }
+    
 }
